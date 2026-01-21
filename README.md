@@ -1,53 +1,203 @@
-# Getting Started with Create React App
+# Weather App - Enhanced PWA
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A progressive web app that displays current weather information with advanced features including loading states, recent searches, and temperature unit preferences.
+
+## Features
+
+### ✨ New Enhancements
+
+#### 1. **Loading State**
+- Visual loading spinner displayed while fetching weather data
+- Loading indicator shows from the moment a search is initiated until data is fully loaded
+- Input field is disabled during loading to prevent multiple simultaneous requests
+
+#### 2. **Recent Searches**
+- Automatically saves the last 5 city searches in local storage
+- Recent searches are displayed as clickable buttons below the weather information
+- Click on any recent search to instantly fetch and display weather for that city
+- Search history persists across browser sessions
+
+#### 3. **Unit Toggle (Celsius/Fahrenheit)**
+- Toggle button in the app header to switch between temperature units
+- Current selection is clearly indicated with the format "Switch to °[unit]"
+- User preference is saved in local storage using React Context
+- Temperature displays automatically update when unit is changed
+- Persists user's preference across app sessions and page refreshes
+
+#### 4. **Temperature Context Management**
+- `UnitContext` manages the global temperature unit preference
+- Custom `useUnit()` hook provides easy access to unit state throughout the app
+- Local storage integration ensures preferences survive page reloads
+
+## Project Structure
+
+```
+src/
+├── App.js              # Main app component with search and weather display
+├── App.css             # Enhanced styling for the app
+├── index.js            # App entry point with UnitProvider wrapper
+├── context/
+│   └── UnitContext.js  # Context and provider for temperature unit preference
+└── api/
+    └── fetchWeather.js # Weather API integration
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/eliaatram/pwa-weather.git
+
+# Navigate to the project directory
+cd pwa-weather
+
+# Install dependencies
+npm install
+```
+
+### Running the App
+
+```bash
+# Start the development server
+npm start
+```
+
+The app will open in your browser at [http://localhost:3000](http://localhost:3000).
+
+### Building for Production
+
+```bash
+# Create an optimized production build
+npm run build
+```
+
+## Usage
+
+1. **Search for Weather**: Type a city name and press Enter to fetch weather data
+2. **Toggle Temperature Unit**: Click the "Switch to °F" or "Switch to °C" button in the header
+3. **Use Recent Searches**: Click on any city in the Recent Searches list to quickly fetch its weather
+4. **Persistence**: All preferences and search history are automatically saved to local storage
+
+## Key Technologies
+
+- **React 19.2.3**: UI library and state management
+- **React Context API**: Global state management for temperature units
+- **Local Storage**: Client-side data persistence
+- **Axios**: HTTP client for API requests
+- **CSS3**: Modern styling with animations and gradients
 
 ## Available Scripts
 
-In the project directory, you can run:
-
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Runs the app in development mode with hot reload.
 
 ### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in interactive watch mode.
 
 ### `npm run build`
+Builds the app for production to the `build` folder.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npm run deploy`
+Deploys the built app to GitHub Pages.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## API Integration
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The app uses the [WeatherAPI.com](https://www.weatherapi.com/) API to fetch real-time weather data.
 
-### `npm run eject`
+**Base URL**: `https://api.weatherapi.com/v1/current.json`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Parameters**:
+- `q`: City name (query parameter)
+- `key`: API key
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Response**: Current weather data including temperature (both C and F), condition, humidity, pressure, and visibility.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## State Management
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Component State (App.js)
+- `weatherData`: Current weather information for the searched city
+- `cityName`: User input for city name
+- `error`: Error messages from API calls
+- `loading`: Boolean indicating fetch state
+- `recentSearches`: Array of recently searched cities
 
-## Learn More
+### Context State (UnitContext.js)
+- `unit`: Current temperature unit ("C" or "F")
+- `toggleUnit()`: Function to switch between units
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Local Storage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The app utilizes local storage for:
+1. **Temperature Unit**: Saved as `temperatureUnit` ("C" or "F")
+2. **Recent Searches**: Saved as `recentSearches` (JSON array of city names)
 
-### Code Splitting
+## Responsive Design
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The app is fully responsive and works seamlessly on:
+- Desktop browsers
+- Tablets
+- Mobile devices
+
+CSS media queries ensure optimal layout on screens up to 600px wide.
+
+## Error Handling
+
+- Invalid city names show error messages
+- Network errors are caught and displayed to the user
+- Input validation prevents empty searches
+
+## Browser Support
+
+- Chrome/Chromium
+- Firefox
+- Safari
+- Edge
+- Any modern browser supporting:
+  - ES6+ JavaScript
+  - CSS Grid/Flexbox
+  - Local Storage API
+
+## Performance Features
+
+- Debounced search to prevent excessive API calls
+- Only 5 recent searches stored to minimize storage usage
+- Efficient re-renders using React hooks
+- Optimized CSS animations with GPU acceleration
+
+## Future Enhancements
+
+- Extended weather forecast (7-day)
+- Weather alerts and notifications
+- Geolocation support for automatic local weather
+- Multiple language support
+- Weather charts and analytics
+- Unit test coverage
+- Dark mode toggle
+
+## License
+
+This project is open source and available under the MIT License.
+
+## Credits
+
+- Weather data provided by [WeatherAPI.com](https://www.weatherapi.com/)
+- Icons and UI design inspired by modern weather applications
+- Built as an educational project to demonstrate React best practices
+
+## Support
+
+For issues or feature requests, please create an issue in the GitHub repository.
+
+---
+
+**Original Repository**: [eliaatram/pwa-weather](https://github.com/eliaatram/pwa-weather)
+
 
 ### Analyzing the Bundle Size
 
